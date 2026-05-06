@@ -336,12 +336,12 @@ export default function BlogPost() {
 
           {/* Twitter */}
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:site" content="@tghabib" />
+          <meta name="twitter:site" content="@solodev_" />
           <meta name="twitter:url" content={canonicalUrl} />
           <meta name="twitter:title" content={metaTitle} />
           <meta name="twitter:description" content={metaDescription} />
           {post.coverImage && <meta name="twitter:image" content={post.coverImage.startsWith('http') ? post.coverImage : `https://tghabib.com${post.coverImage}`} />}
-          <meta name="twitter:creator" content="@tghabib" />
+          <meta name="twitter:creator" content="@solodev_" />
         </Helmet>
         
         <CustomCursor />
@@ -399,7 +399,7 @@ export default function BlogPost() {
               style={{ left: selectionPosition.x, top: selectionPosition.y }}
             >
               <a
-                href={`https://twitter.com/intent/tweet?text="${encodeURIComponent(selectedText)}" — @tghabib&url=${shareUrl}`}
+                href={`https://twitter.com/intent/tweet?text="${encodeURIComponent(selectedText)}" — @solodev_&url=${shareUrl}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 bg-brand-orange text-black px-4 py-2 rounded-full font-bold shadow-xl hover:bg-white transition-colors"
@@ -592,21 +592,21 @@ export default function BlogPost() {
                       TG Habib
                     </h3>
                     <p className="text-brand-orange font-mono text-xs uppercase tracking-widest mb-4">
-                      Premium Digital Engineer
+                      Self-made Developer and Video editor
                     </p>
                     <p className="text-base sm:text-lg text-white/60 font-sans mb-8 leading-relaxed max-w-2xl">
-                      I specialize in building high-performance, cinematic web applications that drive conversion and elevate brand perception. Turning complex problems into elegant digital experiences.
+                      I specialize in building high-performance, cinematic web applications and visual experiences that drive conversion and elevate brand perception.
                     </p>
                     
                     <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4">
                       <a 
-                        href="https://twitter.com/tghabib" 
+                        href="https://instagram.com/solodev_" 
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="group/btn inline-flex items-center gap-2 text-sm font-bold text-black bg-brand-orange px-6 py-3 rounded-full hover:bg-white transition-all duration-300 shadow-[0_0_20px_rgba(242,125,38,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]"
                       >
                         <Twitter size={16} className="group-hover/btn:-rotate-12 transition-transform" /> 
-                        Follow on X
+                        Follow on Instagram
                       </a>
                       <a 
                         href="https://github.com/itsGods" 

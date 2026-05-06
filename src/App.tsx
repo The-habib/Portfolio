@@ -13,6 +13,7 @@ const BlogPost = React.lazy(() => import("./pages/BlogPost"));
 const Admin = React.lazy(() => import("./pages/Admin"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 const Lab = React.lazy(() => import("./pages/Lab"));
+const LabAppDetail = React.lazy(() => import("./pages/LabAppDetail"));
 const ProjectDetails = React.lazy(() => import("./pages/ProjectDetails"));
 
 function AnimatedRoutes() {
@@ -34,6 +35,7 @@ function AnimatedRoutes() {
           {isLabSubdomain ? (
             <>
               <Route path="/" element={<Lab />} />
+              <Route path="/:slug" element={<LabAppDetail />} />
             </>
           ) : isBlogSubdomain ? (
             <>
@@ -46,6 +48,7 @@ function AnimatedRoutes() {
               <Route path="/blog" element={<BlogList />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/lab" element={<Lab />} />
+              <Route path="/lab/:slug" element={<LabAppDetail />} />
               <Route path="/project/:slug" element={<ProjectDetails />} />
             </>
           )}

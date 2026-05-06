@@ -26,22 +26,23 @@ export default function Home() {
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Habib",
-      "url": "https://tghabib.com",
-      "jobTitle": "Full-Stack Developer",
-      "description": "Vibecoder building modern web apps with React, Firebase, and TypeScript",
-      "email": "hello@tghabib.com",
+      "url": "https://solodev_.com",
+      "jobTitle": "Self-made Developer and Video editor",
+      "description": "Self-made Developer and Video editor building modern digital experiences.",
+      "email": "hello@solodev_.com",
       "sameAs": [
-        "https://github.com/itsGods"
+        "https://github.com/itsGods",
+        "https://instagram.com/solodev_"
       ]
     },
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "TG Habib | Full-Stack Developer",
-      "url": "https://tghabib.com",
+      "name": "Solodev | Self-made Developer and Video editor",
+      "url": "https://solodev_.com",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://tghabib.com/blog?q={search_term_string}",
+        "target": "https://solodev_.com/blog?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     }
@@ -50,24 +51,24 @@ export default function Home() {
   return (
     <PageTransition>
       <Helmet>
-        <title>TG Habib | Full-Stack Developer & Vibecoder</title>
-        <meta name="description" content="TG Habib is a Full-Stack Developer and Vibecoder building fast, modern web apps with React, Firebase, and TypeScript. Available for freelance projects." />
-        <meta name="keywords" content="Full-Stack Developer, React Developer, Firebase, TypeScript, Vibecoder, Solo Developer, Web Apps, Next.js" />
-        <link rel="canonical" href="https://tghabib.com/" />
-        <meta property="og:title" content="TG Habib | Full-Stack Developer & Vibecoder" />
-        <meta property="og:description" content="TG Habib is a Full-Stack Developer and Vibecoder building fast, modern web apps with React, Firebase, and TypeScript." />
-        <meta property="og:url" content="https://tghabib.com/" />
+        <title>Solodev | Self-made Developer and Video editor</title>
+        <meta name="description" content="Solodev is a Self-made Developer and Video editor building fast, modern web apps with React, Firebase, and TypeScript. Available for freelance projects." />
+        <meta name="keywords" content="Developer, Video Editor, Self-made, React Developer, Firebase, TypeScript, Web Apps, Next.js" />
+        <link rel="canonical" href="https://solodev_.com/" />
+        <meta property="og:title" content="Solodev | Self-made Developer and Video editor" />
+        <meta property="og:description" content="Solodev is a Self-made Developer and Video editor building fast, modern web apps with React, Firebase, and TypeScript." />
+        <meta property="og:url" content="https://solodev_.com/" />
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="TG Habib" />
+        <meta property="og:site_name" content="Solodev" />
         <meta property="og:locale" content="en_US" />
         <meta property="og:image" content="https://raw.githubusercontent.com/itsGods/Personal/refs/heads/main/file_0000000038e47208a7c7e84e80a5026d.png" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@tghabib" />
-        <meta name="twitter:url" content="https://tghabib.com/" />
-        <meta name="twitter:title" content="TG Habib | Full-Stack Developer & Vibecoder" />
-        <meta name="twitter:description" content="TG Habib is a Full-Stack Developer and Vibecoder building fast, modern web apps with React, Firebase, and TypeScript." />
+        <meta name="twitter:site" content="@solodev_" />
+        <meta name="twitter:url" content="https://solodev_.com/" />
+        <meta name="twitter:title" content="Solodev | Self-made Developer and Video editor" />
+        <meta name="twitter:description" content="Solodev is a Self-made Developer and Video editor building fast, modern web apps with React, Firebase, and TypeScript." />
         <meta name="twitter:image" content="https://raw.githubusercontent.com/itsGods/Personal/refs/heads/main/file_0000000038e47208a7c7e84e80a5026d.png" />
-        <meta name="twitter:creator" content="@tghabib" />
+        <meta name="twitter:creator" content="@solodev_" />
       </Helmet>
       <main className="relative bg-brand-black text-brand-light selection:bg-brand-orange selection:text-white md:cursor-none">
         <CustomCursor />

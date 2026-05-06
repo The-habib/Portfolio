@@ -31,8 +31,9 @@ export default function CustomCursor() {
       }
     };
 
-    // Check if device supports hover
-    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+    // Check if device supports hover safely
+    const mq = typeof window !== "undefined" && window.matchMedia ? window.matchMedia("(pointer: coarse)") : null;
+    const isTouchDevice = mq ? mq.matches : false;
     
     if (!isTouchDevice) {
       window.addEventListener("mousemove", moveCursor);

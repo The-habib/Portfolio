@@ -4,7 +4,7 @@ import { collection, query, orderBy, onSnapshot, doc, setDoc, deleteDoc, serverT
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth, loginWithGoogle, logout } from "../firebase";
 import { format } from "date-fns";
-import { Plus, Edit2, Trash2, LogOut, Sparkles, Image as ImageIcon, Wand2, Users, FileText, Eye, Code, Upload, X, Mail, CheckSquare, Square } from "lucide-react";
+import { Plus, Edit2, Trash2, LogOut, Sparkles, Image as ImageIcon, Wand2, Users, FileText, Eye, Code, Upload, X, Mail, CheckSquare, Square, Rocket } from "lucide-react";
 import { GoogleGenAI, Type } from "@google/genai";
 import ReactMarkdown from "react-markdown";
 import { calculateReadingTime } from "../lib/utils";
@@ -13,6 +13,7 @@ import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
 import remarkBreaks from 'remark-breaks';
 import { handleFirestoreError, OperationType } from "../lib/firebase-errors";
+import LabAppAdmin from "../components/admin/LabAppAdmin";
 
 const resizeAndCompressImage = (base64Str: string, maxWidth = 1200, maxHeight = 675): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -73,7 +74,7 @@ export default function Admin() {
   const [isSendingNewsletter, setIsSendingNewsletter] = useState(false);
   const [newsletterStatus, setNewsletterStatus] = useState<{message: string, type: 'success' | 'error'} | null>(null);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
-  const [activeTab, setActiveTab] = useState<"posts" | "subscribers">("posts");
+  const [activeTab, setActiveTab] = useState<"posts" | "subscribers" | "lab_apps">("posts");
   const [subscribers, setSubscribers] = useState<any[]>([]);
   
   // Editor State
@@ -533,6 +534,12 @@ ${editorContent}`,
               <FileText size={16} /> Posts
             </button>
             <button 
+              onClick={() => setActiveTab("lab_apps")}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full font-mono text-sm uppercase tracking-widest transition-colors ${activeTab === "lab_apps" ? "bg-brand-orange text-white" : "text-white/50 hover:text-white"}`}
+            >
+              <Rocket size={16} /> Lab Apps
+            </button>
+            <button 
               onClick={() => setActiveTab("subscribers")}
               className={`flex items-center gap-2 px-4 py-2 rounded-full font-mono text-sm uppercase tracking-widest transition-colors ${activeTab === "subscribers" ? "bg-brand-orange text-white" : "text-white/50 hover:text-white"}`}
             >
@@ -856,6 +863,10 @@ ${editorContent}`,
               </div>
             </div>
           </>
+        ) : activeTab === "lab_apps" ? (
+          <div className="w-full">
+            <LabAppAdmin />
+          </div>
         ) : (
           <div className="bg-brand-dark rounded-2xl border border-white/10 overflow-hidden">
             <div className="overflow-x-auto">

@@ -87,8 +87,33 @@
       },
       "required": ["role"]
     }
+    "LabApp": {
+      "title": "LabApp",
+      "description": "A dynamic app or game published in the lab.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "App title" },
+        "slug": { "type": "string", "description": "URL slug" },
+        "description": { "type": "string", "description": "Short description" },
+        "fullDescription": { "type": "string", "description": "Markdown full description" },
+        "icon": { "type": "string", "description": "Icon URL" },
+        "coverImage": { "type": "string", "description": "Cover Image URL" },
+        "screenshots": { "type": "array", "items": { "type": "string" }, "description": "Screenshot URLs" },
+        "category": { "type": "string", "description": "Category (e.g. Game, Tool)" },
+        "status": { "type": "string", "description": "Status (published, draft)" },
+        "link": { "type": "string", "description": "External or internal link" },
+        "createdAt": { "type": "timestamp", "description": "Creation time" },
+        "updatedAt": { "type": "timestamp", "description": "Last update time" },
+        "tags": { "type": "array", "items": { "type": "string" }, "description": "Tags" }
+      },
+      "required": ["title", "slug", "description", "status", "createdAt", "updatedAt"]
+    }
   },
   "firestore": {
+    "lab_apps/{appId}": {
+      "schema": "LabApp",
+      "description": "Collection of experimental lab apps."
+    },
     "posts/{postId}": {
       "schema": "BlogPost",
       "description": "Collection of blog posts."

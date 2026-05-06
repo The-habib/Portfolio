@@ -23,7 +23,7 @@ export default function About() {
   const y2 = useTransform(scrollYProgress, [0, 1], [-50, 50]);
   const rotate = useTransform(scrollYProgress, [0, 1], [-5, 5]);
 
-  const text = "I am a Premium Digital Engineer, building high-performance, cinematic web applications that elevate brands and drive conversions.";
+  const text = "I am a Self-made Developer and Video editor, building high-performance, cinematic web applications and visual experiences that elevate brands.";
   const words = text.split(" ");
 
   return (
@@ -52,7 +52,7 @@ export default function About() {
                 transition={{ duration: 0.8, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
                 className="inline-block mr-[0.25em]"
               >
-                {word === "Premium" || word === "Digital" || word === "Engineer," ? (
+                {word === "Self-made" || word === "Developer" || word === "Video" || word === "editor," ? (
                   <span className="font-display font-bold italic text-brand-orange relative group">
                     {word}
                     <span className="absolute -bottom-2 left-0 h-[2px] w-full bg-brand-orange/30" />
@@ -110,7 +110,7 @@ export default function About() {
               <motion.img
                 key={currentImage}
                 src={images[currentImage]}
-                alt="TG Habib - Creative Developer and Vibecoder Portrait"
+                alt="TG Habib - Self-made Developer and Video editor Portrait"
                 width="600"
                 height="800"
                 initial={{ opacity: 0, x: "100%", scale: 1.05 }}

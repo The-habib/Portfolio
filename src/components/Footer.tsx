@@ -5,8 +5,8 @@ import { db } from "../firebase";
 
 const socials = [
   { name: "GitHub", url: "https://github.com/itsGods" },
-  { name: "Email", url: "mailto:hello@tghabib.com" },
-  { name: "Twitter", url: "#" },
+  { name: "Email", url: "mailto:hello@solodev_.com" },
+  { name: "Instagram", url: "https://instagram.com/solodev_" },
   { name: "LinkedIn", url: "#" },
 ];
 
@@ -150,7 +150,7 @@ export default function Footer() {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="font-mono text-[10px] uppercase tracking-widest text-white/30"
           >
-            &copy; {new Date().getFullYear()} TG Habib. All Rights Reserved.
+            &copy; {new Date().getFullYear()} Solodev. All Rights Reserved.
           </motion.div>
           
           <motion.div

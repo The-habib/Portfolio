@@ -1,101 +1,118 @@
 import { motion } from "motion/react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { FlaskConical, ArrowLeft } from "lucide-react";
+import { FlaskConical, ArrowLeft, Star, Download, Search } from "lucide-react";
 import CustomCursor from "../components/CustomCursor";
 import Grain from "../components/Grain";
 import PageTransition from "../components/PageTransition";
+import { collection, query, orderBy, onSnapshot, where } from "firebase/firestore";
+import { db } from "../firebase";
+import { useState, useEffect } from "react";
 
 export default function Lab() {
   const isLabSubdomain = window.location.hostname.startsWith('lab.');
-  const canonicalUrl = "https://lab.tghabib.com";
+  const canonicalUrl = "https://lab.solodev_.com";
+
+  const [apps, setApps] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const q = query(collection(db, "lab_apps"), where("status", "==", "published"), orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setApps(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <PageTransition>
-      <main className="relative min-h-screen bg-brand-black text-brand-light selection:bg-brand-orange selection:text-white md:cursor-none flex flex-col items-center justify-center overflow-hidden">
+      <main className="relative min-h-screen bg-brand-black text-brand-light selection:bg-brand-orange selection:text-white md:cursor-none">
         <Helmet>
-          <title>Lab | TG Habib — Experimental Area</title>
-          <meta name="description" content="The Lab: An experimental area for creative coding, WebGL, and future digital experiences by TG Habib." />
-          <meta name="robots" content="noindex, nofollow" />
+          <title>Lab Store | Solodev</title>
+          <meta name="description" content="Discover experimental apps, creative coding projects, and games published by Solodev." />
+          <meta name="robots" content="index, follow" />
           <link rel="canonical" href={canonicalUrl} />
           
-          {/* Open Graph / Facebook */}
           <meta property="og:type" content="website" />
           <meta property="og:url" content={canonicalUrl} />
-          <meta property="og:title" content="Lab | TG Habib — Experimental Area" />
-          <meta property="og:description" content="The Lab: An experimental area for creative coding, WebGL, and future digital experiences by TG Habib." />
-          <meta property="og:site_name" content="TG Habib" />
-          <meta property="og:locale" content="en_US" />
-          <meta property="og:image" content="https://raw.githubusercontent.com/itsGods/Personal/refs/heads/main/file_0000000038e47208a7c7e84e80a5026d.png" />
-
-          {/* Twitter */}
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:site" content="@tghabib" />
-          <meta name="twitter:url" content={canonicalUrl} />
-          <meta name="twitter:title" content="Lab | TG Habib — Experimental Area" />
-          <meta name="twitter:description" content="The Lab: An experimental area for creative coding, WebGL, and future digital experiences by TG Habib." />
-          <meta name="twitter:image" content="https://raw.githubusercontent.com/itsGods/Personal/refs/heads/main/file_0000000038e47208a7c7e84e80a5026d.png" />
-          <meta name="twitter:creator" content="@tghabib" />
+          <meta property="og:title" content="Lab Store | Solodev" />
+          <meta property="og:description" content="Discover experimental apps, creative coding projects, and games by Solodev." />
         </Helmet>
         
         <CustomCursor />
         <Grain />
 
-        {/* Background Elements */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[60vh] w-[60vw] rounded-full bg-brand-orange/5 blur-[150px] pointer-events-none" />
-        <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_20%,transparent_100%)]" />
-
-        <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center justify-center px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-8 flex h-24 w-24 items-center justify-center rounded-full border border-brand-orange/30 bg-brand-orange/10 text-brand-orange shadow-[0_0_30px_rgba(242,125,38,0.2)]"
-          >
-            <FlaskConical size={40} strokeWidth={1.5} />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <h1 className="font-display text-5xl font-black tracking-tighter text-white md:text-7xl lg:text-8xl">
-              THE <span className="text-brand-orange">LAB</span>
-            </h1>
-            
-            <div className="my-8 flex items-center justify-center gap-4">
-              <div className="h-[1px] w-12 bg-brand-orange/50" />
-              <h2 className="font-mono text-xs uppercase tracking-[0.3em] text-brand-orange">
-                EXPERIMENTAL ZONE
-              </h2>
-              <div className="h-[1px] w-12 bg-brand-orange/50" />
+        {/* Global Toolbar like Playstore */}
+        <div className="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/10 px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-brand-orange flex items-center justify-center rounded-lg text-black">
+              <FlaskConical size={18} fill="currentColor" />
             </div>
-
-            <p className="mx-auto mb-12 max-w-xl font-sans text-lg leading-relaxed text-white/60">
-              Welcome to the Lab. This is a dedicated space for future experiments, creative coding, WebGL prototypes, and bleeding-edge digital experiences. 
-              <br /><br />
-              <span className="italic text-white/40">Initiating sequence...</span>
-            </p>
-
-            {isLabSubdomain ? (
-              <a
-                href="https://tghabib.com"
-                className="group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full border border-white/20 bg-white/5 px-8 py-4 font-mono text-xs uppercase tracking-widest text-white backdrop-blur-md transition-all hover:border-brand-orange hover:bg-brand-orange/10"
-              >
-                <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-                <span>Return to Main Site</span>
-              </a>
-            ) : (
-              <Link
-                to="/"
-                className="group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full border border-white/20 bg-white/5 px-8 py-4 font-mono text-xs uppercase tracking-widest text-white backdrop-blur-md transition-all hover:border-brand-orange hover:bg-brand-orange/10"
-              >
-                <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-                <span>Return to Main Site</span>
-              </Link>
+            <span className="font-display font-bold text-lg hidden sm:block tracking-wide">Lab Store</span>
+          </div>
+          <div className="flex-1 max-w-md mx-6">
+            <div className="relative bg-white/5 rounded-full px-4 py-2 flex items-center border border-white/10">
+              <Search size={16} className="text-white/40 absolute left-4" />
+              <input 
+                type="text" 
+                disabled 
+                placeholder="Search apps & games (coming soon)..." 
+                className="w-full bg-transparent outline-none pl-8 text-sm font-sans text-white/80 placeholder:text-white/40" 
+              />
+            </div>
+          </div>
+          <div>
+            {!isLabSubdomain && (
+               <Link to="/" className="text-white/60 hover:text-white flex items-center gap-2 font-mono text-sm uppercase tracking-widest"><ArrowLeft size={16}/> Home</Link>
             )}
-          </motion.div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 py-12">
+          
+          <h2 className="text-2xl font-display font-bold text-white mb-6">Recommended for you</h2>
+
+          {loading ? (
+             <div className="flex justify-center py-20"><div className="w-8 h-8 rounded-full border-2 border-brand-orange border-t-transparent animate-spin"/></div>
+          ) : (
+            <>
+              {apps.length === 0 ? (
+                <div className="py-20 text-center flex flex-col items-center">
+                   <FlaskConical size={48} className="text-white/10 mb-4" />
+                   <p className="text-white/40 font-mono text-sm uppercase tracking-widest">No apps published yet. Check back soon.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+                  {apps.map((app, idx) => (
+                    <motion.div 
+                      key={app.id} 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.05 }}
+                    >
+                      <Link to={`/lab/${app.slug}`} className="group block focus:outline-none">
+                        <div className="w-full aspect-square rounded-2xl md:rounded-3xl overflow-hidden bg-white/5 border border-white/10 shadow-lg mb-3 flex items-center justify-center transition-transform group-hover:scale-[1.02] active:scale-95 duration-200">
+                          {app.icon ? (
+                            <img src={app.icon} alt={app.title} className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="text-4xl text-white/20 font-display font-bold">{app.title.charAt(0)}</span>
+                          )}
+                        </div>
+                        <h3 className="font-sans text-sm text-white/90 font-medium truncate mb-1">{app.title}</h3>
+                        <div className="flex items-center gap-2 mb-1">
+                           <span className="text-xs text-white/50 font-mono truncate max-w-full">{app.category || 'App'}</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-[11px] font-bold text-white/80">
+                           4.9 <Star size={10} fill="currentColor" />
+                        </div>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
         </div>
       </main>
     </PageTransition>

@@ -104,6 +104,24 @@ service cloud.firestore {
              (!affectedKeys.hasAny(['reactions']) || request.resource.data.reactions is map);
     }
 
+    function isValidLabApp() {
+      return hasOnlyAllowedFields(['title', 'slug', 'description', 'fullDescription', 'icon', 'coverImage', 'screenshots', 'category', 'status', 'link', 'createdAt', 'updatedAt', 'tags']) &&
+             hasRequiredFields(['title', 'slug', 'description', 'status', 'createdAt', 'updatedAt']) &&
+             validStringLength('title', 1, 200) &&
+             validStringLength('slug', 1, 200) &&
+             validStringLength('description', 1, 1000) &&
+             isValidOptionalString('fullDescription', 0, 100000) &&
+             isValidOptionalString('icon', 0, 500000) &&
+             isValidOptionalString('coverImage', 0, 500000) &&
+             isValidOptionalString('category', 0, 100) &&
+             isValidOptionalString('link', 0, 1000) &&
+             request.resource.data.status in ['published', 'draft'] &&
+             request.resource.data.createdAt is timestamp &&
+             request.resource.data.updatedAt is timestamp &&
+             (!('screenshots' in request.resource.data) || request.resource.data.screenshots is list) &&
+             (!('tags' in request.resource.data) || request.resource.data.tags is list);
+    }
+
     // ===============================================================
     // Rules
     // ===============================================================
@@ -115,6 +133,13 @@ service cloud.firestore {
       allow create: if isAdmin() && isValidPost();
       allow update: if (isAdmin() && isValidPost() && areImmutableFieldsUnchanged(['createdAt'])) ||
                        (resource.data.published == true && isPublicInteraction());
+      allow delete: if isAdmin();
+    }
+
+    match /lab_apps/{appId} {
+      allow read: if resource.data.status == 'published' || isAdmin();
+      allow create: if isAdmin() && isValidLabApp();
+      allow update: if isAdmin() && isValidLabApp() && areImmutableFieldsUnchanged(['createdAt']);
       allow delete: if isAdmin();
     }
 

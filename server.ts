@@ -2,11 +2,15 @@ import express from "express";
 import { createServer as createViteServer } from "vite";
 import fs from "fs";
 import path from "path";
-import { localBlogPosts } from "./src/data/blogPosts";
+import compression from "compression";
+import { localBlogPosts } from "./src/data/blogPosts.ts";
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
+
+  // Output compression for fast loading
+  app.use(compression());
 
   // Load Firebase config
   let firebaseConfig: any = {};
@@ -52,7 +56,7 @@ async function startServer() {
     res.type("text/plain");
     res.send(`User-agent: *
 Allow: /
-Sitemap: https://tghabib.com/sitemap.xml`);
+Sitemap: https://solodev_.com/sitemap.xml`);
   });
 
   // Dynamic Sitemap Generation
@@ -87,7 +91,7 @@ Sitemap: https://tghabib.com/sitemap.xml`);
           const updatedAt = post.createdAt.toDate().toISOString();
           dynamicUrls += `
   <url>
-    <loc>https://tghabib.com/blog/${post.slug}</loc>
+    <loc>https://solodev_.com/blog/${post.slug}</loc>
     <lastmod>${updatedAt}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -106,7 +110,7 @@ Sitemap: https://tghabib.com/sitemap.xml`);
               if (slug) {
                 dynamicUrls += `
   <url>
-    <loc>https://tghabib.com/blog/${slug}</loc>
+    <loc>https://solodev_.com/blog/${slug}</loc>
     <lastmod>${updatedAt}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -120,17 +124,17 @@ Sitemap: https://tghabib.com/sitemap.xml`);
       const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://tghabib.com/</loc>
+    <loc>https://solodev_.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tghabib.com/blog</loc>
+    <loc>https://solodev_.com/blog</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://lab.tghabib.com/</loc>
+    <loc>https://lab.solodev_.com/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>${dynamicUrls}
@@ -178,8 +182,8 @@ Sitemap: https://tghabib.com/sitemap.xml`);
           rssItems += `
     <item>
       <title><![CDATA[${post.title}]]></title>
-      <link>https://tghabib.com/blog/${post.slug}</link>
-      <guid>https://tghabib.com/blog/${post.slug}</guid>
+      <link>https://solodev_.com/blog/${post.slug}</link>
+      <guid>https://solodev_.com/blog/${post.slug}</guid>
       <pubDate>${post.createdAt.toDate().toUTCString()}</pubDate>
       <description><![CDATA[${post.excerpt}]]></description>
     </item>`;
@@ -201,8 +205,8 @@ Sitemap: https://tghabib.com/sitemap.xml`);
                 rssItems += `
     <item>
       <title><![CDATA[${title}]]></title>
-      <link>https://tghabib.com/blog/${slug}</link>
-      <guid>https://tghabib.com/blog/${slug}</guid>
+      <link>https://solodev_.com/blog/${slug}</link>
+      <guid>https://solodev_.com/blog/${slug}</guid>
       <pubDate>${new Date(createdAt).toUTCString()}</pubDate>
       <description><![CDATA[${excerpt}]]></description>
     </item>`;
@@ -215,11 +219,11 @@ Sitemap: https://tghabib.com/sitemap.xml`);
       const rss = `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>TG Habib Blog</title>
-    <link>https://tghabib.com/blog</link>
-    <description>Latest articles from TG Habib</description>
+    <title>Solodev Blog</title>
+    <link>https://solodev_.com/blog</link>
+    <description>Latest articles from Solodev</description>
     <language>en-us</language>
-    <atom:link href="https://tghabib.com/rss.xml" rel="self" type="application/rss+xml" />${rssItems}
+    <atom:link href="https://solodev_.com/rss.xml" rel="self" type="application/rss+xml" />${rssItems}
   </channel>
 </rss>`;
 
@@ -233,6 +237,15 @@ Sitemap: https://tghabib.com/sitemap.xml`);
 
   app.get("/api/debug", (req, res) => {
     res.json({ projectId, databaseId });
+  });
+
+  app.use(express.json());
+  app.post("/api/client-error", (req, res) => {
+    fs.appendFileSync(path.join(process.cwd(), 'client-errors.log'), JSON.stringify(req.body) + '\n');
+    console.error("================== CLIENT ERROR LOGGED ==================");
+    console.error(req.body);
+    console.error("=========================================================");
+    res.json({ success: true });
   });
 
   // Increment View Counter
@@ -319,28 +332,41 @@ Sitemap: https://tghabib.com/sitemap.xml`);
   // Intercept requests to inject SEO meta tags for ALL routes
   app.get("*", async (req, res, next) => {
     // Skip API routes and static assets
-    if (req.path.startsWith("/api/") || req.path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/)) {
+    if (
+      req.path.startsWith("/api/") || 
+      req.path.match(/\.(js|ts|tsx|jsx|mjs|cjs|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map|json|webmanifest)$/) ||
+      req.path.startsWith("/@") ||
+      req.path.startsWith("/node_modules/")
+    ) {
       return next();
     }
 
     try {
-      let title = "TG Habib | Vibecoder & Creative Developer";
-      let description = "I am a Vibecoder & Creative Developer, blending code with cinematic aesthetics to build immersive digital experiences.";
+      let title = "Solodev | Self-made Developer and Video editor";
+      let description = "I am a Self-made Developer and Video editor, blending code with cinematic aesthetics to build immersive digital experiences.";
       let coverImage = "https://raw.githubusercontent.com/itsGods/Personal/refs/heads/main/file_0000000038e47208a7c7e84e80a5026d.png";
-      let canonicalUrl = `https://tghabib.com${req.path === '/' ? '' : req.path}`;
+      let canonicalUrl = `https://solodev_.com${req.path === '/' ? '' : req.path}`;
       let type = "website";
       let jsonLd: any = null;
+      let pageContent = "";
+
+      // Check for subdomains
+      const isBlogSubdomain = req.hostname.startsWith('blog.');
+      const isLabSubdomain = req.hostname.startsWith('lab.');
 
       // 1. Handle Blog Post Route
-      if (req.path.startsWith("/blog/") && req.path !== "/blog") {
-        const slug = req.path.split("/")[2];
+      if ((req.path.startsWith("/blog/") && req.path !== "/blog") || (isBlogSubdomain && req.path !== "/" && req.path !== "/admin")) {
+        const pathParts = req.path.split("/").filter(Boolean);
+        const slug = isBlogSubdomain ? pathParts[0] : pathParts[1];
+        
         const localPost = localBlogPosts.find(p => p.slug === slug);
 
         if (localPost) {
-          title = localPost.seoTitle || localPost.title || "Blog Post | TG Habib";
-          description = localPost.seoDescription || localPost.excerpt || "Read this amazing blog post by TG Habib.";
+          title = localPost.seoTitle || localPost.title || "Blog Post | Solodev";
+          description = localPost.seoDescription || localPost.excerpt || "Read this amazing blog post by Solodev.";
           coverImage = localPost.coverImage || coverImage;
           type = "article";
+          pageContent = localPost.content || "";
           
           const createdAt = localPost.createdAt?.toDate().toISOString() || new Date().toISOString();
           
@@ -351,10 +377,10 @@ Sitemap: https://tghabib.com/sitemap.xml`);
             "headline": title,
             "description": description,
             "image": [coverImage],
-            "author": { "@type": "Person", "name": "TG Habib", "url": "https://tghabib.com/" },
+            "author": { "@type": "Person", "name": "Solodev", "url": "https://solodev_.com/" },
             "publisher": {
               "@type": "Organization",
-              "name": "TG Habib",
+              "name": "Solodev",
               "logo": { "@type": "ImageObject", "url": "https://raw.githubusercontent.com/itsGods/Personal/refs/heads/main/file_0000000038e47208a7c7e84e80a5026d.png" }
             },
             "datePublished": createdAt,
@@ -387,10 +413,11 @@ Sitemap: https://tghabib.com/sitemap.xml`);
               const docPreviewToken = doc.previewToken?.stringValue;
               
               if (isPublished || (previewToken && previewToken === docPreviewToken)) {
-                title = doc.seoTitle?.stringValue || doc.title?.stringValue || "Blog Post | TG Habib";
-                description = doc.seoDescription?.stringValue || doc.excerpt?.stringValue || "Read this amazing blog post by TG Habib.";
+                title = doc.seoTitle?.stringValue || doc.title?.stringValue || "Blog Post | Solodev";
+                description = doc.seoDescription?.stringValue || doc.excerpt?.stringValue || "Read this amazing blog post by Solodev.";
                 coverImage = doc.coverImage?.stringValue || coverImage;
                 type = "article";
+                pageContent = doc.content?.stringValue || "";
                 
                 const createdAt = doc.createdAt?.timestampValue || new Date().toISOString();
                 const updatedAt = doc.updatedAt?.timestampValue || createdAt;
@@ -402,16 +429,67 @@ Sitemap: https://tghabib.com/sitemap.xml`);
                   "headline": title,
                   "description": description,
                   "image": [coverImage],
-                  "author": { "@type": "Person", "name": "TG Habib", "url": "https://tghabib.com/" },
+                  "author": { "@type": "Person", "name": "Solodev", "url": "https://solodev_.com/" },
                   "publisher": {
                     "@type": "Organization",
-                    "name": "TG Habib",
+                    "name": "Solodev",
                     "logo": { "@type": "ImageObject", "url": "https://raw.githubusercontent.com/itsGods/Personal/refs/heads/main/file_0000000038e47208a7c7e84e80a5026d.png" }
                   },
                   "datePublished": createdAt,
                   "dateModified": updatedAt
                 };
               }
+            }
+          }
+        }
+      }
+      // Handle Lab App Route
+      else if ((req.path.startsWith("/lab/") && req.path !== "/lab") || (isLabSubdomain && req.path !== "/" && req.path !== "/admin")) {
+        const pathParts = req.path.split("/").filter(Boolean);
+        const slug = isLabSubdomain ? pathParts[0] : pathParts[1];
+        
+        const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/${databaseId}/documents:runQuery`;
+        const queryPayload = {
+          structuredQuery: {
+            from: [{ collectionId: "lab_apps" }],
+            where: {
+              fieldFilter: { field: { fieldPath: "slug" }, op: "EQUAL", value: { stringValue: slug } }
+            },
+            limit: 1
+          }
+        };
+
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(queryPayload)
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.length > 0 && data[0].document) {
+            const doc = data[0].document.fields;
+            const isPublished = doc.status?.stringValue === 'published';
+            
+            if (isPublished) {
+              title = (doc.title?.stringValue || "App") + " | Solodev Lab";
+              description = doc.description?.stringValue || "Explore this experimental app on Solodev Lab.";
+              coverImage = doc.coverImage?.stringValue || doc.icon?.stringValue || coverImage;
+              type = "website";
+              
+              const createdAt = doc.createdAt?.timestampValue || new Date().toISOString();
+              
+              jsonLd = {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": doc.title?.stringValue || "App",
+                "url": canonicalUrl,
+                "description": description,
+                "image": coverImage,
+                "author": { "@type": "Person", "name": "Solodev", "url": "https://solodev_.com/" },
+                "datePublished": createdAt,
+                "applicationCategory": doc.category?.stringValue || "WebApplication"
+              };
             }
           }
         }
@@ -451,18 +529,18 @@ Sitemap: https://tghabib.com/sitemap.xml`);
             "headline": title,
             "description": description,
             "image": [coverImage],
-            "author": { "@type": "Person", "name": "TG Habib" }
+            "author": { "@type": "Person", "name": "Solodev" }
           };
         }
       }
       // 3. Handle Blog List Route
       else if (req.path === "/blog") {
-        title = "Blog | TG Habib - Engineering & Vibe Coding";
+        title = "Blog | Solodev - Engineering & Vibe Coding";
         description = "Read my latest articles on full-stack engineering, React, Next.js, and the art of vibe coding.";
       }
       // 4. Handle Lab Route
       else if (req.path === "/lab") {
-        title = "Lab | TG Habib - Creative Experiments";
+        title = "Lab | Solodev - Creative Experiments";
         description = "A collection of my creative coding experiments, WebGL sketches, and UI/UX interactions.";
       }
 
@@ -497,6 +575,15 @@ Sitemap: https://tghabib.com/sitemap.xml`);
       // Inject JSON-LD if available
       if (jsonLd) {
         html = html.replace('</head>', `  <script type="application/ld+json">\n${JSON.stringify(jsonLd, null, 2)}\n</script>\n</head>`);
+      }
+
+      // SSR Fallback: Inject the raw content into a <noscript> block so crawlers see the text immediately.
+      // Using <noscript> instead of display:none prevents Google from flagging it as "hidden text spam".
+      if (pageContent) {
+        // Escape basic HTML to prevent breaking the document structure
+        const safeContent = pageContent.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const ssrHtml = `<noscript id="ssr-seo-fallback"><h1>${title}</h1><p>${description}</p><pre>${safeContent}</pre></noscript><div id="root"></div>`;
+        html = html.replace('<div id="root"></div>', ssrHtml);
       }
 
       // If in development, let Vite transform the HTML

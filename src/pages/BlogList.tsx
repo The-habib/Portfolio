@@ -118,7 +118,7 @@ export default function BlogList() {
         setLoading(false);
 
         // Update Cache
-        blogCache.posts = postsData;
+        blogCache.posts = allPostsData;
         blogCache.allTags = sortedTags;
         blogCache.lastVisible = lastDoc;
         blogCache.hasMore = more;
@@ -220,15 +220,15 @@ export default function BlogList() {
     <PageTransition>
       <main className="relative min-h-screen bg-brand-black text-brand-light selection:bg-brand-orange selection:text-white md:cursor-none flex flex-col">
         <Helmet>
-          <title>Dev Blog | Habib — Full-Stack Developer & Vibecoder</title>
-          <meta name="description" content="Technical articles on React, Firebase, Vite, TypeScript, and solo development by Habib — a Full-Stack Developer and Vibecoder." />
-          <meta name="keywords" content="Blog, React, Firebase, TypeScript, Web Development, Vibecoder, Frontend, Full-Stack" />
+          <title>Dev Blog | Habib — Self-made Developer and Video editor</title>
+          <meta name="description" content="Technical articles on React, Firebase, Vite, TypeScript, and solo development by Habib." />
+          <meta name="keywords" content="Blog, React, Firebase, TypeScript, Web Development, Developer, Frontend, Video editor" />
           <link rel="canonical" href={canonicalUrl} />
           
           {/* Open Graph / Facebook */}
           <meta property="og:type" content="website" />
           <meta property="og:url" content={canonicalUrl} />
-          <meta property="og:title" content="Dev Blog | Habib — Full-Stack Developer & Vibecoder" />
+          <meta property="og:title" content="Dev Blog | Habib — Self-made Developer and Video editor" />
           <meta property="og:description" content="Technical articles on React, Firebase, Vite, TypeScript, and solo development by Habib." />
           <meta property="og:site_name" content="TG Habib" />
           <meta property="og:locale" content="en_US" />
@@ -236,12 +236,12 @@ export default function BlogList() {
 
           {/* Twitter */}
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:site" content="@tghabib" />
+          <meta name="twitter:site" content="@solodev_" />
           <meta name="twitter:url" content={canonicalUrl} />
-          <meta name="twitter:title" content="Dev Blog | Habib — Full-Stack Developer & Vibecoder" />
+          <meta name="twitter:title" content="Dev Blog | Habib — Self-made Developer and Video editor" />
           <meta name="twitter:description" content="Technical articles on React, Firebase, Vite, TypeScript, and solo development by Habib." />
           <meta name="twitter:image" content="https://raw.githubusercontent.com/itsGods/Personal/refs/heads/main/file_0000000038e47208a7c7e84e80a5026d.png" />
-          <meta name="twitter:creator" content="@tghabib" />
+          <meta name="twitter:creator" content="@solodev_" />
         </Helmet>
         
         <CustomCursor />

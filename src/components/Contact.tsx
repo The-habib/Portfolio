@@ -42,11 +42,11 @@ export default function Contact() {
           </p>
 
           <div className="flex flex-col gap-6 font-mono text-sm tracking-widest text-white/50">
-            <a href="mailto:hello@tghabib.com" aria-label="Email me at hello@tghabib.com" className="group flex items-center gap-4 transition-colors hover:text-white">
+            <a href="mailto:hello@solodev_.com" aria-label="Email me at hello@solodev_.com" className="group flex items-center gap-4 transition-colors hover:text-white">
               <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors group-hover:border-brand-orange group-hover:bg-brand-orange/10 group-hover:text-brand-orange">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
               </span>
-              hello@tghabib.com
+              hello@solodev_.com
             </a>
             <a href="https://github.com/itsGods" target="_blank" rel="noreferrer" aria-label="Visit my GitHub profile" className="group flex items-center gap-4 transition-colors hover:text-white">
               <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors group-hover:border-brand-orange group-hover:bg-brand-orange/10 group-hover:text-brand-orange">
@@ -54,7 +54,7 @@ export default function Contact() {
               </span>
               github.com/itsGods
             </a>
-            <a href="https://calendly.com/tghabib" target="_blank" rel="noreferrer" aria-label="Book a discovery call" className="group flex items-center gap-4 transition-colors hover:text-white mt-4">
+            <a href="https://calendly.com/solodev_" target="_blank" rel="noreferrer" aria-label="Book a discovery call" className="group flex items-center gap-4 transition-colors hover:text-white mt-4">
               <span className="flex h-10 w-10 items-center justify-center rounded-full border border-brand-orange bg-brand-orange/10 text-brand-orange transition-colors group-hover:bg-brand-orange group-hover:text-black">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
               </span>
